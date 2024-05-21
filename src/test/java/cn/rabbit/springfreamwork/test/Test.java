@@ -12,8 +12,8 @@ public class Test {
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
         PropertyValues propertyValues = new PropertyValues();
         propertyValues.addPropertyValue(new PropertyValue("name","张三"));
-        beanFactory.registerBeanDefinition("userService",new BeanDefinition(UserService.class,propertyValues));
-        UserService userService = (UserService) beanFactory.getBean("userService");
-        userService.queryUserInfo();
+//        beanFactory.registerBeanDefinition("userService",new BeanDefinition(UserService.class,propertyValues));
+//        UserService userService = (UserService) beanFactory.getBean("userService");
+//        userService.queryUserInfo();
     }
 }
