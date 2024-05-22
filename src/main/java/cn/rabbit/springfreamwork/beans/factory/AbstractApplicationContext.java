@@ -6,10 +6,19 @@ import cn.rabbit.springfreamwork.beans.factory.config.BeanFactoryPostProcessor;
 import cn.rabbit.springfreamwork.beans.factory.config.BeanPostProcessor;
 import cn.rabbit.springfreamwork.beans.factory.config.ConfigurableListableBeanFactory;
 import cn.rabbit.springfreamwork.beans.factory.core.io.DefaultResourceLoader;
+import cn.rabbit.springfreamwork.context.ApplicationEvent;
+import cn.rabbit.springfreamwork.context.ContextRefreshedEvent;
+import cn.rabbit.springfreamwork.event.ApplicationEventMulticaster;
+import cn.rabbit.springfreamwork.event.ApplicationListener;
+import cn.rabbit.springfreamwork.event.SimpleApplicationEventMulticaster;
 
 import java.util.Map;
 
 public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
+
+
+    private ApplicationEventMulticaster applicationEventMulticaster;
+
 
     @Override
     public void refresh() throws BeansException {
@@ -27,6 +36,39 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
         // 5. 提前实例化单例Bean对象
         beanFactory.preInstantiateSingletons();
+
+        // 6. 初始化事件发布者
+        initApplicationEventMulticaster();
+
+        // 7. 注册事件监听器
+        registerListeners();
+
+        // 9. 发布容器刷新完成事件
+        finishRefresh();
+    }
+
+    private void finishRefresh() {
+        publishEvent(new ContextRefreshedEvent(this));
+    }
+
+    @Override
+    public void publishEvent(ApplicationEvent event) {
+        applicationEventMulticaster.multicastEvent(event);
+    }
+
+    private void registerListeners() {
+        ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+        Map<String, ApplicationListener> listenerMap = beanFactory.getBeanOfType(ApplicationListener.class);
+        listenerMap.
+        forEach((beanName, listener) -> {
+            applicationEventMulticaster.addApplicationListener(listener);
+        });
+    }
+
+    private void initApplicationEventMulticaster() {
+        ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+        this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
+        beanFactory.registerSingleton(ApplicationEventMulticaster.class.getName(), applicationEventMulticaster);
     }
 
     private void registerBeanPostProcessors(ConfigurableListableBeanFactory factory) {

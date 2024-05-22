@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
 
-    <bean id="userService" class="cn.rabbit.springfreamwork.test.bean.UserService">
-        <property name="name" value="10001"/>
-    </bean>
-    <bean id="MyrBeanPostProcessor" class="cn.rabbit.springfreamwork.test.bean.MyrBeanPostProcessor">
+<!--    <bean class="cn.bugstack.springframework.test.event.ContextRefreshedEventListener"/>-->
 
-    </bean>
+    <bean class="cn.rabbit.springfreamwork.test.bean.CustomEventListener"/>
+
+<!--    <bean class="cn.bugstack.springframework.test.event.ContextClosedEventListener"/>-->
+
 </beans>

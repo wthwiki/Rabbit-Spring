@@ -4,6 +4,7 @@ import cn.hutool.core.collection.ComputeIter;
 import cn.rabbit.springfreamwork.beans.factory.config.BeanDefinition;
 import cn.rabbit.springfreamwork.beans.factory.config.BeanPostProcessor;
 import cn.rabbit.springfreamwork.beans.factory.config.ConfigurableListableBeanFactory;
+import cn.rabbit.springfreamwork.event.SimpleApplicationEventMulticaster;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,8 +33,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     @Override
     public <T> Map<String,T> getBeanOfType(Class<T> type) {
         Map<String, T> beanMap=new HashMap<>();
-        beanDefinitionMap.forEach((k,v)->{
-            if(type.isAssignableFrom(v.getAClass())){
+        singletonObjects.forEach((k,v)->{
+            if(type.isAssignableFrom(v.getClass())){
                 beanMap.put(k, (T) v);
             }
         });
@@ -51,6 +52,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
         singletonObjects.forEach((k,v)->{
 //            if()
         });
+    }
+
+    @Override
+    public void registerSingleton(String name, Object bean) {
+        singletonObjects.put(name,bean);
     }
 
     @Override
