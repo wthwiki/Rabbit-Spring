@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
 
-    <bean id="userService" class="cn.rabbit.springfreamwork.test.bean.UserService">
+    <bean id="userService" class="cn.rabbit.springframework.test.bean.UserService">
         <property name="name" value="rabbit"/>
     </bean>
 
-    <bean class="cn.rabbit.springfreamwork.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+    <bean class="cn.rabbit.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
 
-    <bean id="beforeAdvice" class="cn.rabbit.springfreamwork.test.bean.UserServiceBeforeAdvice"/>
+    <bean id="beforeAdvice" class="cn.rabbit.springframework.test.bean.UserServiceBeforeAdvice"/>
 
-    <bean id="methodInterceptor" class="cn.rabbit.springfreamwork.aop.adapter.MethodBeforeAdviceInterceptor">
+    <bean id="methodInterceptor" class="cn.rabbit.springframework.aop.adapter.MethodBeforeAdviceInterceptor">
         <property name="advice" ref="beforeAdvice"/>
     </bean>
 
-    <bean id="pointcutAdvisor" class="cn.rabbit.springfreamwork.aop.aspectj.AspectJExpressionPointcutAdvisor">
-        <property name="expression" value="execution(* cn.rabbit.springfreamwork.test.bean.IUserService.*(..))"/>
+    <bean id="pointcutAdvisor" class="cn.rabbit.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* cn.rabbit.springframework.test.bean.IUserService.*(..))"/>
         <property name="advice" ref="methodInterceptor"/>
     </bean>
 
