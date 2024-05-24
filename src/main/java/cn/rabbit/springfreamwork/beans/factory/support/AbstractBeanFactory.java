@@ -8,25 +8,13 @@ import cn.rabbit.springfreamwork.beans.factory.config.BeanDefinition;
 public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport  implements BeanFactory , BeanDefinitionRegistry{
     @Override
     public Object getBean(String name) {
-        Object singleton = getSingleton(name);
-        if(singleton != null){
-            return singleton;
-        }
-        BeanDefinition beanDefinition = getBeanDefinition(name);
-        return createBean(name,beanDefinition);
+        return doGetBean(name,  null);
     }
 
     @Override
     public Object getBean(String name, Object... args) throws BeansException {
-        Object bean = getSingleton(name);
-        if(bean != null){
-            return bean;
-        }
-        BeanDefinition beanDefinition = getBeanDefinition(name);
-        return createBean(name, beanDefinition, args);
+        return doGetBean(name, args);
     }
-
-    abstract Object createBean(String name, BeanDefinition beanDefinition);
 
     abstract Object createBean(String name, BeanDefinition beanDefinition, Object[] args);
 

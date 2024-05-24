@@ -1,10 +1,12 @@
 package cn.rabbit.springfreamwork.beans.factory.support;
 
 import cn.rabbit.springfreamwork.beans.factory.config.SingletonBeanRegistry;
+import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Data
 public class DefaultSingletonBeanRegistry  implements SingletonBeanRegistry {
 
     Map<String,Object> singletonObjects = new HashMap<>();

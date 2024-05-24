@@ -8,7 +8,7 @@ import java.lang.reflect.Constructor;
 public class SimpleInstantiationStrategy implements InstantiationStrategy{
     @Override
     public Object instantiate(BeanDefinition beanDefinition, String beanName, Constructor ctor, Object[] args) throws BeansException {
-        Class aClass = beanDefinition.getAClass();
+        Class aClass = beanDefinition.getBeanClass();
         try{
             if(ctor==null){
                 return aClass.newInstance();

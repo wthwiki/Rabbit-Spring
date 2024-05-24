@@ -14,7 +14,8 @@ import java.util.Map;
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry{
 
     Map<String , BeanDefinition> beanDefinitionMap = new HashMap<>();
-    List<BeanPostProcessor> beanPostProcessorList =new ArrayList<>();
+
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
 
     public void registerBeanDefinition(String name, BeanDefinition object){
         beanDefinitionMap.put(name,object);
@@ -33,9 +34,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     @Override
     public <T> Map<String,T> getBeanOfType(Class<T> type) {
         Map<String, T> beanMap=new HashMap<>();
-        singletonObjects.forEach((k,v)->{
-            if(type.isAssignableFrom(v.getClass())){
-                beanMap.put(k, (T) v);
+
+        beanDefinitionMap.forEach((beanName,beanDefinition)->{
+            if(type.isAssignableFrom(beanDefinition.getBeanClass())){
+                beanMap.put(beanName, (T) getBean(beanName));
             }
         });
         return beanMap;
@@ -44,7 +46,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
     @Override
     public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
-        beanPostProcessorList.add(beanPostProcessor);
+        beanPostProcessors.add(beanPostProcessor);
     }
 
     @Override
@@ -60,8 +62,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     }
 
     @Override
-    public BeanPostProcessor[] getBeanPostProcessors() {
-        Map<String, BeanPostProcessor> beanPostProcessorMap = getBeanOfType(BeanPostProcessor.class);
-        return beanPostProcessorMap.values().toArray(new BeanPostProcessor[beanPostProcessorMap.size()]);
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+
+        return beanPostProcessors;
     }
 }

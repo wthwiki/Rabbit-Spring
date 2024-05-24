@@ -15,7 +15,7 @@ public class BeanDefinition {
 
     String SCOPE_PROTOTYPE = ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
-    Class<?> aClass;
+    Class<?> beanClass;
 
     private PropertyValues propertyValues;
 
@@ -36,8 +36,8 @@ public class BeanDefinition {
         this.prototype = SCOPE_PROTOTYPE.equals(scope);
     }
 
-    public BeanDefinition(Class<?> aClass) {
-        this.aClass = aClass;
+    public BeanDefinition(Class<?> beanClass) {
+        this.beanClass = beanClass;
         propertyValues = new PropertyValues();
     }
 }
